@@ -1,0 +1,51 @@
+
+;fehlt nur die richtige ausgabe und das er in ner Liste gespeichert wird
+;die fehlenden appends noch einfügen
+(defun insert (tree val)
+  (print tree)
+  (cond
+      ((null tree) (append (list val)))
+      ((< val (car tree)) (insert (cadr tree) val))
+
+      (T
+        (insert (caddr tree) val)
+      )
+  )
+)
+
+;T bei true wird zurückgegeben
+;0 bei false wenn nicht vorhanden
+(defun containes (tree val)
+  (cond
+    ((null tree)  0)
+    ((eql (car tree) val) t)
+    (t  (cond
+              ((listp (car tree)) (containes (append (car tree) (cdr tree)) val))
+              ((containes (cdr tree) val))
+        )
+     )
+   )
+ )
+
+;einfach die NestedList abgeschrieben...COPY AND PASTE GEEEEEEEHT
+  (defun size (tree)
+    (cond
+      ((null tree)  0)
+      (t (+ (cond
+              ((listp (car tree)) (size (append (car tree) (cdr tree))))
+              ((+ 1 (size (cdr tree))))
+             )
+          )
+       )
+     )
+    )
+
+    (defun height (tree)
+      (cond
+        ((atom tree) 0)
+        ((null tree) 0)
+        (t
+          (+ 1 (max (height (cadr tree)) (height (caddr tree))))
+        )
+       )
+      )
