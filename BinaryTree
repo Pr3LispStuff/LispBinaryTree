@@ -1,17 +1,19 @@
 
-;fehlt nur die richtige ausgabe und das er in ner Liste gespeichert wird
-;die fehlenden appends noch einfügen
-(defun insert (tree val)
-  (print tree)
-  (cond
-      ((null tree) (append (list val)))
-      ((< val (car tree)) (insert (cadr tree) val))
 
-      (T
-        (insert (caddr tree) val)
-      )
+(setf biba ‘(8 (4 (2 (1) (3)) (6 (5) (7))) (12 (10 (9) (11)) (14 (13) (15)))
+                                            ))
+
+
+(defun insert (Tree Val)
+  (cond ((null Tree) (list Val nil nil))
+        ((= Val (car Tree)) (print "already exist") Tree)
+
+        ((< Val (car Tree))
+          (list (car Tree) (insert (cadr Tree) Val) (caddr Tree)))
+
+        (t (list (car Tree) (cadr Tree) (insert (caddr Tree) Val)))
   )
-)
+ )
 
 ;T bei true wird zurückgegeben
 ;0 bei false wenn nicht vorhanden
