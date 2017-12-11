@@ -51,3 +51,17 @@
         )
        )
       )
+
+    (defun getMax (Tree)
+      (cond
+        ((equal nil (caddr Tree)) Tree)
+        (t (getMax (caddr Tree)))
+      )
+    )
+
+    (defun getMin (Tree)
+      (cond
+        ((equal nil (cadr Tree)) Tree)
+        (t (getMin (cadr Tree)))
+      )
+    )
