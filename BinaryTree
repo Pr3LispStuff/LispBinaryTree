@@ -65,3 +65,15 @@
         (t (getMin (cadr Tree)))
       )
     )
+    
+    
+    (defun printLevelorder (tree) 
+      (levelorder (list tree)))
+    
+    ;Hilfsfunktion für printLevelorder
+    (defun levelorder (tree)
+      (if (null tree)
+        '()
+        (append 
+          (mapcar #'(lambda (y) (if (listp y) (car y) y)) tree)
+          (levelorder (mapcan #'(lambda (y) (if (listp y) (cadr x) '())) tree)))))
