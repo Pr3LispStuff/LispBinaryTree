@@ -6,7 +6,7 @@
 
 (defun insert (Tree Val)
   (cond ((null Tree) (list Val nil nil))
-        ((= Val (car Tree)) (print "already exist") Tree)
+        ((eql Val (car Tree)) (print "already exist") Tree)
 
         ((< Val (car Tree))
           (list (car Tree) (insert (cadr Tree) Val) (caddr Tree)))
@@ -14,6 +14,32 @@
         (t (list (car Tree) (cadr Tree) (insert (caddr Tree) Val)))
   )
  )
+
+
+
+
+(defun removeNode (Tree val)
+  (print Tree)
+  (print (cadr Tree))
+  (print (caddr Tree))
+  (cond
+        ((null Tree) nil)
+        ((equal 0 (containes Tree val)) (print "nope") (getMin (caddr Tree)))
+        ((eql val (car Tree)) (cond
+                                    ((and (null (cadr Tree)) (null (caddr Tree))) '())
+                                    ((and (equal nil (cadr Tree)) (listp (caddr Tree))) (caddr Tree) (print "A"))
+                                    ((and (listp (cadr Tree)) (equal nil (caddr Tree))) (cadr Tree) (print "B"))
+                                    (t (append (getMin (caddr Tree)) (list (cadr Tree)) (append (list (removeNode (caddr Tree) (list (getMin (caddr Tree))))))     ))
+
+                              )
+      )
+        ;rechter Teilbaum
+        ((> val (car Tree)) (append (list (car Tree)) (list (cadr Tree)) (list (removeNode (caddr Tree) val))))
+        ;linker Teilbaum
+        (t (append (list (car Tree)) (list (removeNode (cadr Tree) val)) (list (caddr Tree))))
+    )
+  )
+
 
 ;T bei true wird zurückgegeben
 ;0 bei false wenn nicht vorhanden
