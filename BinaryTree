@@ -65,3 +65,9 @@
         (t (getMin (cadr Tree)))
       )
     )
+
+    (defun isEmpty (tree)
+      (cond ((null tree) T)
+        (t nil)
+      )
+     )
