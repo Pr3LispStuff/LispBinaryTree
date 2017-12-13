@@ -112,19 +112,14 @@
     )
     
     
-        (defun addAll (tree otherTree)
-      (cond ((null otherTree) tree)
-        (t
-          (cond ((listp (car otherTree))
-            (print "hallo1")
-            (addAll tree (cdr otherTree)))
-            
-              (t 
-                (append tree (insert tree (car otherTree)))
-                (print "hallo2")
-                (addAll tree (cdr otherTree)
-              ))
-          )
-        )
-      )
+    (defun addAll (tree otherTree)
+  (cond
+    ((null otherTree) tree)
+    ((null tree) otherTree)
+    (t
+      (setq tree (insert tree (car otherTree)))
+      (setq tree (addAll tree (cadr  otherTree)))
+      (setq tree (addAll tree (caddr otherTree)))
     )
+  )
+)
