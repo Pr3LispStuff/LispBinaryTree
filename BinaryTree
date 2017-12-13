@@ -4,41 +4,54 @@
                                             ))
 
 
-(defun insert (Tree Val)
+(defun insertNode (Tree Val)
   (cond ((null Tree) (list Val nil nil))
-        ((eql Val (car Tree)) (print "already exist") Tree)
+        ((eql Val (car Tree)) (print "already exist") (car Tree))
 
-        ((< Val (car Tree))
-          (list (car Tree) (insert (cadr Tree) Val) (caddr Tree)))
-
-        (t (list (car Tree) (cadr Tree) (insert (caddr Tree) Val)))
+        ((< Val (car Tree)) (append (list (car Tree)) (list (insertNode (cadr Tree) Val)) (list (caddr Tree))))
+        (t (append (list (car Tree)) (list (cadr Tree)) (list (insertNode (caddr Tree) Val))))
   )
  )
 
-
-
-
-(defun removeNode (Tree val)
-  (print Tree)
-  (print (cadr Tree))
-  (print (caddr Tree))
-  (cond
-        ((null Tree) nil)
-        ((equal 0 (containes Tree val)) (print "nope") (getMin (caddr Tree)))
-        ((eql val (car Tree)) (cond
-                                    ((and (null (cadr Tree)) (null (caddr Tree))) '())
-                                    ((and (equal nil (cadr Tree)) (listp (caddr Tree))) (caddr Tree) (print "A"))
-                                    ((and (listp (cadr Tree)) (equal nil (caddr Tree))) (cadr Tree) (print "B"))
-                                    (t (append (getMin (caddr Tree)) (list (cadr Tree)) (append (list (removeNode (caddr Tree) (list (getMin (caddr Tree))))))     ))
-
-                              )
-      )
-        ;rechter Teilbaum
-        ((> val (car Tree)) (append (list (car Tree)) (list (cadr Tree)) (list (removeNode (caddr Tree) val))))
-        ;linker Teilbaum
-        (t (append (list (car Tree)) (list (removeNode (cadr Tree) val)) (list (caddr Tree))))
-    )
+ (defun insert (filename)
+   (let ((in (open filename :if-does-not-exist nil)))
+    (when in
+      (print (read in))
+      (close in))
+   )
   )
+
+
+;Hilfsfunktion die als erstes aufgerufen wird. Diese geht auf die Containes und gibt bei Containes == true den bearbeitetetn Baum zurück
+;der in removeN aufgerufen wird
+(defun removeN (Tree val)
+  (cond
+        ((equal 0 (containes Tree val)) Tree)
+        (t (removeNode Tree val)
+            )
+      )
+  )
+
+  (defun removeNode (Tree val)
+       (cond
+              ;wenn Baum leer ist wird die Rekursion unterbrochen
+             ((null Tree) nil)
+             ;wenn im Knoten und gesuchter Wert übereinstimmen. Ist bis dahin schon durch den Baum gegangen und hat die Position des Löschvorgangs gefunden
+             ((eql val (car Tree)) (cond
+                                          ;
+                                         ((and (null (cadr Tree)) (null (caddr Tree))) '())
+                                         ((and (equal nil (cadr Tree)) (listp (caddr Tree))) (caddr Tree) (print "A"))
+                                         ((and (listp (cadr Tree)) (equal nil (caddr Tree))) (cadr Tree) (print "B"))
+                                         (t (append (getMin (caddr Tree)) (list (cadr Tree)) (append (list (removeNode (caddr Tree) (car (getMin (caddr Tree))))))))
+                                   )
+           )
+             ;liste wird erstellt
+             ((> val (car Tree)) (append (list (car Tree)) (list (cadr Tree)) (list (removeNode (caddr Tree) val))))
+             ;linker Teilbaum
+             ((< val (car Tree)) (append (list (car Tree)) (list (removeNode (cadr Tree) val)) (list (caddr Tree))))
+         )
+       )
+
 
 
 ;T bei true wird zurückgegeben
@@ -55,7 +68,6 @@
    )
  )
 
-;einfach die NestedList abgeschrieben...COPY AND PASTE GEEEEEEEHT
   (defun size (tree)
     (cond
       ((null tree)  0)
@@ -97,11 +109,8 @@
         (t nil)
       )
      )
-          
-    (defun printlevelorder (tree)
-      (levelorder (list tree))
-    )
-    
+
+
     (defun levelOrder (tree)
         (loop while (not (null tree))
           do
@@ -110,21 +119,16 @@
           (setq tree (append tree (cdr node)))
         )
     )
-    
-    
-        (defun addAll (tree otherTree)
+
+
+  (defun addAll (tree otherTree)
+      (print tree)
+      (print otherTree)
       (cond ((null otherTree) tree)
-        (t
-          (cond ((listp (car otherTree))
-            (print "hallo1")
-            (addAll tree (cdr otherTree)))
-            
-              (t 
-                (append tree (insert tree (car otherTree)))
-                (print "hallo2")
-                (addAll tree (cdr otherTree)
-              ))
-          )
-        )
+            ((listp (car otherTree)) (append (addAll tree (car otherTree)))
+            (t (append (list  (insert tree (car otherTree)))
+                              (addAll tree (cdr otherTree))
+               )
+            )
       )
-    )
+  )
