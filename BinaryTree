@@ -15,13 +15,14 @@
 
 ;insert ne file und geht durch die chars ud macht nach jedem char einen Zeileumbruch
 ;dieser werden dann in tree, durch insert gespeichert. Dies ausgabe Zeigt nil für leere Referenz.
-(defun insert (filename)
+(defun insert (tree1 filename)
 (defparameter tree '())
-* (with-open-file (stream filename)
+(* (with-open-file (stream filename)
     (do ((char (read stream nil)
                (read stream nil)))
         ((null char))
-      (setf tree (insertNode tree char))))
+      (setf tree (insertNode tree char)))))
+  (addAll tree1 tree)
 )
 
 
