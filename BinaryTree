@@ -13,13 +13,16 @@
   )
  )
 
- (defun insert (filename)
-   (let ((in (open filename :if-does-not-exist nil)))
-    (when in
-      (print (read in))
-      (close in))
-   )
-  )
+;insert ne file und geht durch die chars ud macht nach jedem char einen Zeileumbruch
+;dieser werden dann in tree, durch insert gespeichert. Dies ausgabe Zeigt nil für leere Referenz.
+(defun insert (filename)
+(defparameter tree '())
+* (with-open-file (stream filename)
+    (do ((char (read stream nil)
+               (read stream nil)))
+        ((null char))
+      (setf tree (insertNode tree char))))
+)
 
 
 ;Hilfsfunktion die als erstes aufgerufen wird. Diese geht auf die Containes und gibt bei Containes == true den bearbeitetetn Baum zurück
