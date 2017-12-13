@@ -114,6 +114,10 @@
      )
 
 
+    (defun printlevelorder (tree)
+      (levelorder (list tree))
+    )
+    
     (defun levelOrder (tree)
         (loop while (not (null tree))
           do
