@@ -110,3 +110,21 @@
           (setq tree (append tree (cdr node)))
         )
     )
+    
+    
+        (defun addAll (tree otherTree)
+      (cond ((null otherTree) tree)
+        (t
+          (cond ((listp (car otherTree))
+            (print "hallo1")
+            (addAll tree (cdr otherTree)))
+            
+              (t 
+                (append tree (insert tree (car otherTree)))
+                (print "hallo2")
+                (addAll tree (cdr otherTree)
+              ))
+          )
+        )
+      )
+    )
